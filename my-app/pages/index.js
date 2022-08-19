@@ -9,7 +9,7 @@ export default function Home() {
   // walletConnected keep track of whether the user's wallet is connected or not
   const [walletConnected, setWalletConnected] = useState(false);
   //Time left
-  const [timeLeft, setTimeLeft] = useState("Aug 12, 2022 15:00:00");
+  const [timeLeft, setTimeLeft] = useState("Aug 31, 2022 15:00:00");
   // presaleStarted keeps track of whether the presale has started or not
   const [presaleStarted, setPresaleStarted] = useState(false);
   // presaleEnded keeps track of whether the presale ended
@@ -142,7 +142,7 @@ export default function Home() {
   - Probably can delete other functions in favor of this
   */
 
-  const countDownFunc = async (targetDate) => {
+  const countDownFunc = (targetDate) => {
     // Update the count down every 1 second
     const x = setInterval(function () {
       // Get today's date and time
@@ -176,11 +176,11 @@ export default function Home() {
       const _presaleStarted = await checkIfPresaleStarted();
       //const currentTime// get current time get hardcoded future time subtract the two and if difference is 0 start presale
       if (!_presaleStarted) {
-        const targetDate = new Date("Aug 12, 2022 15:00:00").getTime();
-        const countDown = await countDownFunc(targetDate);
+        const targetDate = new Date("Aug 31, 2022 15:00:00").getTime();
+        const countDown = countDownFunc(targetDate);
         setTimeLeft(countDown);
-        console.log(timeLeft);
-        return timeLeft;
+        console.log(timeLeft, "timeleft");
+        // return timeLeft;
       }
     } catch (err) {
       console.error(err);
