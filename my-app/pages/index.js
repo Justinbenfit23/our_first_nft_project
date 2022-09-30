@@ -22,7 +22,7 @@ export default function Home() {
   // Create a reference to the Web3 Modal (used for connecting to Metamask) which persists as long as the page is open
   const web3ModalRef = useRef();
 
-  const targetDate = "Fri, 30 September 2022 13:45:00 MDT";
+  const targetDate = "Fri, 30 September 2022 22:45:00 MDT";
 
   /**
    * presaleMint: Mint an NFT during the presale
