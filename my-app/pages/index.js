@@ -1,4 +1,5 @@
 import { Contract, providers, utils } from "ethers";
+import Countdown from 'react-countdown';
 import Head from "next/head";
 import React, { useEffect, useRef, useState } from "react";
 import Web3Modal from "web3modal";
@@ -8,8 +9,6 @@ import styles from "../styles/Home.module.css";
 export default function Home() {
   // walletConnected keep track of whether the user's wallet is connected or not
   const [walletConnected, setWalletConnected] = useState(false);
-  //Time left
-  const [timeLeft, setTimeLeft] = useState("Aug 31, 2022 15:00:00");
   // presaleStarted keeps track of whether the presale has started or not
   const [presaleStarted, setPresaleStarted] = useState(false);
   // presaleEnded keeps track of whether the presale ended
@@ -22,6 +21,8 @@ export default function Home() {
   const [tokenIdsMinted, setTokenIdsMinted] = useState("0");
   // Create a reference to the Web3 Modal (used for connecting to Metamask) which persists as long as the page is open
   const web3ModalRef = useRef();
+
+  const targetDate = "Fri, 30 September 2022 13:45:00 MDT";
 
   /**
    * presaleMint: Mint an NFT during the presale
@@ -131,57 +132,6 @@ export default function Home() {
       }
       setPresaleStarted(_presaleStarted);
       return _presaleStarted;
-    } catch (err) {
-      console.error(err);
-      return false;
-    }
-  };
-
-  /*
-  Function for starting timer and continuously checking to see if time is up then triggering the presale to start
-  - Probably can delete other functions in favor of this
-  */
-
-  const countDownFunc = (targetDate) => {
-    // Update the count down every 1 second
-    const x = setInterval(function () {
-      // Get today's date and time
-      const now = new Date().getTime();
-
-      // Find the distance between now and the count down date
-      const distance = targetDate - now;
-
-      // Time calculations for days, hours, minutes and seconds
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor(
-        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-      );
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-      // Output the result in an element with id="demo"
-      const response =
-        days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
-      // If the count down is over, write some text
-      if (distance < 0) {
-        clearInterval(x);
-        return startPresale();
-      }
-      return response;
-    }, 1000);
-  };
-
-  const timerFunc = async () => {
-    try {
-      const _presaleStarted = await checkIfPresaleStarted();
-      //const currentTime// get current time get hardcoded future time subtract the two and if difference is 0 start presale
-      if (!_presaleStarted) {
-        const targetDate = new Date("Aug 31, 2022 15:00:00").getTime();
-        const countDown = countDownFunc(targetDate);
-        setTimeLeft(countDown);
-        console.log(timeLeft, "timeleft");
-        // return timeLeft;
-      }
     } catch (err) {
       console.error(err);
       return false;
@@ -414,8 +364,9 @@ export default function Home() {
           <div className={styles.description}>
             {tokenIdsMinted}/20 have been minted
           </div>
-          {renderButton()}
-          {timerFunc()}
+          <Countdown date={targetDate}>
+            {renderButton()}
+          </Countdown>
         </div>
         <div>
           <img className={styles.image} src="./cryptodevs/0.svg" />
